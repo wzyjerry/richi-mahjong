@@ -1,0 +1,124 @@
+fon: # 风牌
+  - ton # 东
+  - nan # 南
+  - sha # 西
+  - pe # 北
+config: # 对局设置
+  players: int # 玩家数 (3或4)
+  rounds: int # 局数, 东风单位 (1/2/4)
+  time: string # 时间, 采用a+b描述, a每次时间, b备用时间 (3+5/5+10/5+20/60+0/300+0)
+  transparent: bool # 启用透明
+  tenbo: int # 起始点数: 最小单位100, 最大值200000
+  need: int # 1位必要点数: 最小单位100, 最大值200000，必须大于起始点数; ALL LAST时1位不足该点数将南入/西入
+  chi: int # 赤宝牌数量 (0/3/4)
+  kuigae: bool # 食替
+  kuitan: bool # 食断
+  koyaku: bool # 古役
+  minFan: int # 番缚 (1/2/4)
+tile: # 麻将牌
+  name: string # 名称
+  suit: # 种类
+    - manzu # 万
+    - pinzu # 饼
+    - souzu # 索
+    - tsupai # 字
+  number: int # 数字
+  chi: bool # 红宝牌
+  transparent: bool # 透明
+ordered_kind: # 有序类型
+  - chi # 吃，顺子
+  - pon # 碰，刻子
+  - kan # 杠
+  - jantou # 雀头
+agari_status: # 和牌状态
+  ken: fon # 当前场风
+  kuitan: bool # 是否食断
+  koyaku: bool # 是否古役
+  minFan: int # 番缚
+
+  tenho: bool # 天和
+  chiho: bool # 地和
+  renho: bool # 人和
+  chankan: bool # 是否抢杠
+  rinshankaiho: bool # 是否岭上开花
+  saigo: bool # 是否最后一轮
+  tsubamegaeshi: bool # 是否燕返
+  kanfuri: bool # 是否杠振
+
+yaku: # 役种
+  fan: int # 番
+  yaku: bool # 役
+  koyaku: bool # 古役
+  kuisagari: bool # 食下役
+  name: string # 名称
+  desc: string # 描述
+  yaku_kind: # 役种类型
+    # 一番
+    - richi
+    - tanyao
+    - tsumo
+    - menfon
+    - chanfon
+    - sangen
+    - pinfu
+    - ipeko
+    - chankan
+    - rinshan_kaiho
+    - haitei_moyue
+    - houtei_raoyui
+    - ippatsu
+    - dora
+    - ri_dora
+    - aka_dora
+    - pe_dora
+    - tsubamegaeshi
+    - kanfuri
+    - shiaruraotai
+    # 二番
+    - wrichi
+    - sanshoku_doko
+    - sankantsu
+    - toitoiho
+    - sananko
+    - shosangen
+    - honroutou
+    - chitoitsu
+    - chanta
+    - ikkitsuukan
+    - sanshoku_doujun
+    - umensai
+    - sanrenko
+    # 三番
+    - ryanpeko
+    - junchan
+    - honiso
+    - isshokusanjun
+    # 六番
+    - chiniso
+    # 满贯
+    - nagashi_mangan
+    - ipinmoyue
+    - chiyupinraoyui
+    # 役满
+    - tenho
+    - chiho
+    - daisangen
+    - suankou
+    - tsuiso
+    - ryuiso
+    - chinroutou
+    - shaosushi
+    - sukantsu
+    - kokushimusou
+    - chuurenpoutou
+    - renho
+    - daisharin
+    - daichikurin
+    - daisuurin
+    - ishigami_sannen
+    # 双倍役满
+    - suankou_tanki
+    - kokushimusou_jusanmen
+    - junsei_chuurenpoutou
+    - daisushi
+    - daichishin
