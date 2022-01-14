@@ -47,6 +47,10 @@ func (t *Tile) Less(t2 *Tile) bool {
 	return t.GetSuit() < t2.GetSuit()
 }
 
+func (t *Tile) IsYaochu() bool {
+	return t.GetSuit() == common.Suit_SUIT_TSUPAI || t.GetNumber() == 1 || t.GetNumber() == 9
+}
+
 func (t *Tile) String() string {
 	number := strconv.Itoa(int(t.GetNumber()))
 	prefix := ""

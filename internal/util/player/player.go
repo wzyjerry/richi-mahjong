@@ -7,7 +7,9 @@ import (
 	"github.com/wzyjerry/mahjong/internal/ent/schema/common"
 	"github.com/wzyjerry/mahjong/internal/util"
 	"github.com/wzyjerry/mahjong/internal/util/deck"
+	"math/rand"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -436,6 +438,7 @@ func genKokushi() []*deck.Tile {
 func GenTile(suit common.Suit, number int64) *deck.Tile {
 	return &deck.Tile{
 		Tile: &common.Tile{
+			Name:        util.PString(strconv.Itoa(rand.Int())),
 			Suit:        &suit,
 			Number:      &number,
 			Transparent: util.PBool(false),

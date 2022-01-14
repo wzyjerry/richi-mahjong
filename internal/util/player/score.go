@@ -222,7 +222,6 @@ func (p *player) GetScore(status *common.AgariStatus, wanpai *deck.Wanpai) (int6
 
 func (p *player) scoreNormal(allTiles []*deck.Tile, kind []*deck.Ordered, lastTile *deck.Tile, status *common.AgariStatus, wanpai *deck.Wanpai) (int64, int64, []*common.Yaku) {
 	menzentin := p.isMenzentin()
-	var fu int64
 	var yakus []*common.Yaku
 	// 四暗刻相关
 	ankou := 0
@@ -506,14 +505,14 @@ RyuhisoOuter:
 			fan += yaku.GetFan()
 		}
 	}
-	return fan, fu, yakus
+	return fan, p.calcFu(kind, lastTile, status), yakus
 }
 
 func (p *player) pinfu(kind []*deck.Ordered, lastTile *deck.Tile, status *common.AgariStatus) bool {
 	for _, k := range kind {
 		switch k.Kind() {
 		case common.OrderedKind_ORDERED_KIND_CHI:
-			if k.Front().Next().GetName() == lastTile.GetName() {
+			if k.Front().Next().GetName() == lastTile.GetName() || (k.Front().GetName() == lastTile.GetName() && lastTile.GetNumber() == 7) || (k.Back().GetName() == lastTile.GetName() && lastTile.GetNumber() == 3) {
 				return false
 			}
 		case common.OrderedKind_ORDERED_KIND_PON:
@@ -521,14 +520,78 @@ func (p *player) pinfu(kind []*deck.Ordered, lastTile *deck.Tile, status *common
 		case common.OrderedKind_ORDERED_KIND_KAN:
 			return false
 		case common.OrderedKind_ORDERED_KIND_JANTOU:
-			if k.Front().GetSuit() == common.Suit_SUIT_TSUPAI {
-				if k.Front().GetNumber() == int64(p.seat) || k.Front().GetNumber() == int64(status.GetKen()) || k.Front().GetNumber() >= 5 {
-					return false
-				}
+			if k.Front().GetSuit() == common.Suit_SUIT_TSUPAI && (k.Front().GetNumber() == int64(p.seat) || k.Front().GetNumber() == int64(status.GetKen()) || k.Front().GetNumber() >= 5) || k.Front().GetName() == lastTile.GetName() || k.Front().Next().GetName() == lastTile.GetName() {
+				return false
 			}
 		}
 	}
 	return true
+}
+
+func (p *player) calcFu(kind []*deck.Ordered, lastTile *deck.Tile, status *common.AgariStatus) int64 {
+	menzentin := p.isMenzentin()
+	var fu int64 = 20
+	pinfu := true
+	for _, k := range kind {
+		switch k.Kind() {
+		case common.OrderedKind_ORDERED_KIND_CHI:
+			if k.Front().Next().GetName() == lastTile.GetName() || (k.Front().GetName() == lastTile.GetName() && lastTile.GetNumber() == 7) || (k.Back().GetName() == lastTile.GetName() && lastTile.GetNumber() == 3) {
+				pinfu = false
+				fu += 2
+			}
+		case common.OrderedKind_ORDERED_KIND_PON:
+			pinfu = false
+			d := 0
+			if k.Front().IsYaochu() {
+				d = 1
+			}
+			if k.From() != p.seat {
+				fu += 2 << d
+			} else {
+				fu += 4 << d
+			}
+		case common.OrderedKind_ORDERED_KIND_KAN:
+			pinfu = false
+			d := 0
+			if k.Front().IsYaochu() {
+				d = 1
+			}
+			if k.From() != p.seat {
+				fu += 8 << d
+			} else {
+				fu += 16 << d
+			}
+		case common.OrderedKind_ORDERED_KIND_JANTOU:
+			if k.Front().GetSuit() == common.Suit_SUIT_TSUPAI && (k.Front().GetNumber() == int64(p.seat) || k.Front().GetNumber() == int64(status.GetKen()) || k.Front().GetNumber() >= 5) || k.Front().GetName() == lastTile.GetName() || k.Front().Next().GetName() == lastTile.GetName() {
+				pinfu = false
+				fu += 2
+			}
+		}
+	}
+	if pinfu {
+		if !menzentin {
+			return 30
+		} else {
+			if p.ron == nil {
+				return 20
+			}
+			return 30
+		}
+	}
+	if menzentin {
+		if p.ron == nil {
+			fu += 2
+		}
+		fu += 10
+	} else {
+		if p.ron == nil {
+			fu += 2
+		}
+	}
+	if fu%10 != 0 {
+		fu = (fu/10 + 1) * 10
+	}
+	return fu
 }
 
 // 返回手牌排序后的花色种类，降序排序
@@ -550,7 +613,7 @@ func suits(allTiles []*deck.Tile) []common.Suit {
 // 除了字牌是否都为老头牌
 func allRoutou(allTiles []*deck.Tile) bool {
 	for _, t := range allTiles {
-		if t.GetSuit() != common.Suit_SUIT_TSUPAI && t.GetNumber() != 1 && t.GetNumber() != 9 {
+		if t.GetSuit() != common.Suit_SUIT_TSUPAI && !t.IsYaochu() {
 			return false
 		}
 	}

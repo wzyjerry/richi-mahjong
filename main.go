@@ -29,32 +29,47 @@ func main() {
 	d := deck.NewDeck(3)
 
 	wanpai := dealer.Wanpai()
-	wanpai.GetDoraIndicators()[0].Tile = player.GenTile(common.Suit_SUIT_PINZU, 1).Tile
-	wanpai.GetDoraIndicators()[0].Prev().Tile = player.GenTile(common.Suit_SUIT_PINZU, 2).Tile
+	wanpai.GetDoraIndicators()[0].Tile = player.GenTile(common.Suit_SUIT_TSUPAI, 1).Tile
+	wanpai.GetDoraIndicators()[0].Prev().Tile = player.GenTile(common.Suit_SUIT_TSUPAI, 2).Tile
 	fmt.Println(wanpai)
 
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 1))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 1))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 2))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 3))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 3))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 4))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 4))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 5))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 5))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 6))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 6))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 7))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 8))
+	//d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 9))
+
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 2))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 2))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 3))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 4))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 4))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 5))
+	d.PushBack(player.GenTile(common.Suit_SUIT_MANZU, 5))
 	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 2))
 	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 3))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 3))
 	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 4))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 4))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 5))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 5))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 6))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 6))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 7))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 8))
-	d.PushBack(player.GenTile(common.Suit_SUIT_PINZU, 9))
+	d.PushBack(player.GenTile(common.Suit_SUIT_SOUZU, 2))
+	d.PushBack(player.GenTile(common.Suit_SUIT_SOUZU, 3))
+	d.PushBack(player.GenTile(common.Suit_SUIT_SOUZU, 4))
+
 	for i := 0; i < 14; i++ {
 		p.Draw(d)
 	}
-	ron := player.GenTile(common.Suit_SUIT_PINZU, 3)
+	ron := player.GenTile(common.Suit_SUIT_MANZU, 3)
 	p.SetRon(ron)
 
 	// TODO: 番缚
 
-	p.Set()
+	//p.Set()
 	fmt.Printf("%s %s\n", p, ron)
 	fan, fu, yakus := p.GetScore(&common.AgariStatus{
 		Ken:           util.PFon(common.Fon_FON_TON),
